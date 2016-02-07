@@ -3,24 +3,26 @@ package main;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 public class Player {
 	
 	private int x, y;
-	private int dx, dy;
+	private static int dx, dy;
 	
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
-	public void update(GameContainer gc, int dt) {
+	public void update(GameContainer gc, int dt) throws SlickException {
 		Input input = gc.getInput();
 		int dx = (input.isKeyDown(Input.KEY_D) ? 1 : 0) - (input.isKeyDown(Input.KEY_A) ? 1 : 0);
 		int dy = (input.isKeyDown(Input.KEY_S) ? 1 : 0) - (input.isKeyDown(Input.KEY_W) ? 1 : 0);
 		checkCollisions(dx, dy);
+		World.checkExits(x, y);
 	}
-	public void render(GameContainer gc, Graphics g) {
+	public void render(GameContainer gc, Graphics g) throws SlickException {
 		int width = gc.getWidth()/Main.SCALE;
 		int height = gc.getHeight()/Main.SCALE;
 		Images.getPlayerImage(dx, dy).draw(width/2, height/2);
@@ -31,9 +33,9 @@ public class Player {
 			this.dx = dx;
 			this.dy = dy;
 		}
-		if(World.placeFree(x+dx, y))
+		if(World.isPlaceFree(x+dx, y))
 			x += dx;
-		if(World.placeFree(x, y+dy))
+		if(World.isPlaceFree(x, y+dy))
 			y += dy;
 		
 		//borders of map collisions

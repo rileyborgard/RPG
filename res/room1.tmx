@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="15">
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16" tilecount="20">
+  <image source="tilemap.png" width="64" height="80"/>
+ </tileset>
+ <layer name="Ground" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NkYGBgxINZkTA+dTDMPMgxKe4nxr+j5tHWvFE8ikfx4MUASETEjUAGAAA=
+  </data>
+ </layer>
+ <layer name="Walls" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NhYGBgwYORAT512NSPglEwCkbBKBi+AACvHpbBQAYAAA==
+  </data>
+ </layer>
+ <objectgroup name="Spawns" width="20" height="20">
+  <object id="8" name="spawn0" x="144" y="32" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup name="Portals" width="20" height="20">
+  <object id="9" name="exit0" x="128" y="0" width="48" height="16">
+   <properties>
+    <property name="map" value="room2"/>
+    <property name="spawn" value="spawn0"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

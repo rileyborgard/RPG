@@ -46,8 +46,8 @@ public class Main extends BasicGame {
 		Font awtFont;
 		try {
 			awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-			fontSmall = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/160)), false);
-			fontMedium = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/80)), false);
+			fontSmall = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/80)), false);
+			fontMedium = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/40)), false);
 			fontLarge = new TrueTypeFont(awtFont.deriveFont((float) gc.getWidth()/20), true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,7 +57,7 @@ public class Main extends BasicGame {
 		g.scale(SCALE, SCALE);
 		World.render(gc, g);
 		g.scale(1.0f/SCALE, 1.0f/SCALE);
-		g.setFont((org.newdawn.slick.Font) fontLarge);
+		g.setFont((org.newdawn.slick.Font) fontMedium);
 		Text.render(g);
 //		Image textImg = new Image(gc.getWidth(), gc.getHeight());
 //		Text.render(textImg.getGraphics());

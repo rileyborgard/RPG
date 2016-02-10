@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="16">
- <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16" tilecount="20">
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
   <image source="tilemap.png" width="64" height="80"/>
  </tileset>
  <layer name="Ground" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NkYGBgxIOZkTA+ddjUD0ZMivuJ8e+oebQ1bxSP4lE8eDEAJb/Z8kAGAAA=
+   H4sIAAAAAAAAA2NkYGBgxIOZkTA+ddjUD0ZMivuJ8e+oedQxj5MMu8jRQ0s82NwzikcxrTEAYoTK/0AGAAA=
   </data>
  </layer>
  <layer name="Walls" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NhYGBgwYORAT512NSPglEwCkbBKBi+AACvHpbBQAYAAA==
+   H4sIAAAAAAAAA2NhYGBgwYORAT512NSPglEwCkbBKBi+AACvHpbBQAYAAA==
   </data>
  </layer>
  <objectgroup name="Objects" width="20" height="20">
-  <object id="8" name="spawn0" x="144" y="32" width="16" height="16"/>
-  <object id="15" name="exit0" x="128" y="0" width="48" height="1">
+  <object name="spawn0" x="144" y="32" width="16" height="16"/>
+  <object name="exit0" x="128" y="0" width="48" height="1">
    <properties>
     <property name="map" value="room2"/>
     <property name="spawn" value="spawn0"/>

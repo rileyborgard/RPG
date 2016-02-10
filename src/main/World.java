@@ -1,6 +1,5 @@
 package main;
 
-import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,133 +9,137 @@ import org.newdawn.slick.tiled.TiledMap;
 
 public class World {
 
+	public static final int OL_EXIT = 0, OL_SPAWN = 1, OL_NPC = 2;
+	
 	private static TiledMap map;
 
 	private static Player player;
 
 	private static boolean talking;
-	//	private static String text;
-
-	private static Image textImage;
-	private static Graphics textG;
+	// private static String text;
 
 	public static void init(GameContainer gc) throws SlickException {
 		loadMap("room1", "spawn0");
-		int width = gc.getWidth()/Main.SCALE;
-		int height = gc.getHeight()/Main.SCALE;
-		textImage = new Image(width, height/4);
-		textG = textImage.getGraphics();
 	}
 
 	public static void update(GameContainer gc, int dt) throws SlickException {
-		if(!talking)
+		if (!talking)
 			player.update(gc, dt);
-		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-			if(!talking) chat();
-			else if(Text.done()) {
+		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+			if (!talking)
+				chat();
+			else if (Text.done()) {
 				talking = false;
 				Text.reset();
-			}else
+			} else
 				Text.skip();
 		}
 	}
+
 	public static void render(GameContainer gc, Graphics g) throws SlickException {
-		int width = gc.getWidth()/Main.SCALE;
-		int height = gc.getHeight()/Main.SCALE;
-		int sx = width/2-player.getX();
-		int sy = height/2-player.getY();
-		map.render(sx,  sy);
+		int width = gc.getWidth() / Main.SCALE;
+		int height = gc.getHeight() / Main.SCALE;
+		int sx = width / 2 - player.getX();
+		int sy = height / 2 - player.getY();
+		map.render(sx, sy);
 		player.render(gc, g);
-		//		g.setFont((Font) Main.fontLarge);
-		//		Text.render(g);
-		//		if(talking) {
-		//			textG.setFont(Main.font);
-		//			textG.setColor(Color.black);
-		//			textG.fillRect(0, 0, width, height);
-		//			textG.setColor(Color.white);
-		//			textG.drawRect(0, 0, width, height);
-		//			textG.drawString(text, 4, 4);
-		//			g.drawImage(textImage, 0, 3*height/4);
-		//		}
+		int objectCount = map.getObjectCount(OL_NPC);
+		for (int i = 0; i < objectCount; i++) {
+			int x = map.getObjectX(OL_NPC, i) + sx;
+			int y = map.getObjectY(OL_NPC, i) + sy;
+			g.drawImage(Images.getPlayerImage(talking ? -player.getDX():0, talking ? -player.getDY():0), x, y);
+		}
 	}
 
 	private static void chat() {
 		int x = player.getX();
 		int y = player.getY();
+		int dx = player.getDX();
+		int dy = player.getDY();
 		int tw = map.getTileWidth();
 		int th = map.getTileHeight();
-		int objGroupCount = map.getObjectGroupCount();
-		for(int i = 0; i < objGroupCount; i++) {
-			int objectCount = map.getObjectCount(i);
-			for(int j = 0; j < objectCount; j++) {
-				if(map.getObjectName(i, j).substring(0, 3).equals("npc")) {
-					int ex = map.getObjectX(i, j);
-					int ey = map.getObjectY(i, j);
-					int ew = map.getObjectWidth(i, j);
-					int eh = map.getObjectHeight(i, j);
-					if(ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
-						Text.say(map.getObjectProperty(i, j, "text", ""),
-								Integer.parseInt(map.getObjectProperty(i, j, "x", "")),
-								Integer.parseInt(map.getObjectProperty(i, j, "y", "")));
-						talking = true;
-						return;
-					}
-				}
+		int objectCount = map.getObjectCount(OL_NPC);
+		for (int i = 0; i < objectCount; i++) {
+			int ex = map.getObjectX(OL_NPC, i) - tw;
+			int ey = map.getObjectY(OL_NPC, i) - th;
+			int ew = map.getObjectWidth(OL_NPC, i) + 2 * tw;
+			int eh = map.getObjectHeight(OL_NPC, i) + 2 * th;
+			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey && dx * (x + tw / 2 - ex - ew / 2) <= 0
+					&& dy * (y + th / 2 - ey - eh / 2) <= 0) {
+				Text.say(DialogueHandler.get(map.getObjectProperty(OL_NPC, i, "text", "")),
+						Integer.parseInt(map.getObjectProperty(OL_NPC, i, "x", "")),
+						Integer.parseInt(map.getObjectProperty(OL_NPC, i, "y", "")));
+				talking = true;
+				return;
 			}
 		}
 	}
 
 	public static void loadMap(String strMap, String strSpawn) throws SlickException {
 		map = new TiledMap("res/" + strMap + ".tmx");
-		int objGroupCount = map.getObjectGroupCount();
-		for(int i = 0; i < objGroupCount; i++) {
-			int objectCount = map.getObjectCount(i);
-			for(int j = 0; j < objectCount; j++) {
-				if(map.getObjectName(i, j).equals(strSpawn)) {
-					player = new Player(map.getObjectX(i, j), map.getObjectY(i, j));
-					return;
-				}
+		int objectCount = map.getObjectCount(OL_SPAWN);
+		for (int i = 0; i < objectCount; i++) {
+			if (map.getObjectName(OL_SPAWN, i).equals(strSpawn)) {
+				player = new Player(map.getObjectX(OL_SPAWN, i), map.getObjectY(OL_SPAWN, i));
+				return;
 			}
 		}
 	}
 
 	public static boolean isPlaceFree(int x, int y) {
-		boolean rightEdge = 1+x/map.getTileWidth() >= map.getWidth();
-		boolean bottomEdge = 1+y/map.getTileHeight() >= map.getHeight();
-		boolean ul = map.getTileId(x/map.getTileWidth(), y/map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-		boolean ur = rightEdge ? true :
-			map.getTileId(1+x/map.getTileWidth(), y/map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-			boolean bl = bottomEdge ? true :
-				map.getTileId(x/map.getTileWidth(), 1+y/map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-				boolean br = rightEdge || bottomEdge ? true :
-					map.getTileId(1+x/map.getTileWidth(), 1+y/map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+		//check walls layer
+		boolean rightEdge = 1 + x / map.getTileWidth() >= map.getWidth();
+		boolean bottomEdge = 1 + y / map.getTileHeight() >= map.getHeight();
+		boolean ul = map.getTileId(x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+		boolean ur = rightEdge ? true
+				: map.getTileId(1 + x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+		boolean bl = bottomEdge ? true
+				: map.getTileId(x / map.getTileWidth(), 1 + y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+		boolean br = rightEdge || bottomEdge ? true
+				: map.getTileId(1 + x / map.getTileWidth(), 1 + y / map.getTileHeight(),
+						map.getLayerIndex("Walls")) > 0;
 
-					boolean xAligned = x % map.getTileWidth() == 0;
-					boolean yAligned = y % map.getTileHeight() == 0;
+		boolean xAligned = x % map.getTileWidth() == 0;
+		boolean yAligned = y % map.getTileHeight() == 0;
 
-					if(ul) return false;
-					if(ur && !xAligned) return false;
-					if(bl && !yAligned) return false;
-					if(br && !xAligned && !yAligned) return false;
-					return true;
+		if (ul)
+			return false;
+		if (ur && !xAligned)
+			return false;
+		if (bl && !yAligned)
+			return false;
+		if (br && !xAligned && !yAligned)
+			return false;
+		
+		int tw = map.getTileWidth();
+		int th = map.getTileHeight();
+		int objectCount = map.getObjectCount(OL_NPC);
+		for(int i = 0; i < objectCount; i++) {
+			int ex = map.getObjectX(OL_NPC, i);
+			int ey = map.getObjectY(OL_NPC, i);
+			int ew = map.getObjectWidth(OL_NPC, i);
+			int eh = map.getObjectHeight(OL_NPC, i);
+			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
+				return false;
+			}
+		}
+		
+		//return true if no collisions
+		return true;
 	}
+
 	public static void checkExits(int x, int y) throws SlickException {
 		int tw = map.getTileWidth();
 		int th = map.getTileHeight();
-		int objGroupCount = map.getObjectGroupCount();
-		for(int i = 0; i < objGroupCount; i++) {
-			int objectCount = map.getObjectCount(i);
-			for(int j = 0; j < objectCount; j++) {
-				if(map.getObjectName(i, j).substring(0, 4).equals("exit")) {
-					int ex = map.getObjectX(i, j);
-					int ey = map.getObjectY(i, j);
-					int ew = map.getObjectWidth(i, j);
-					int eh = map.getObjectHeight(i, j);
-					if(ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
-						loadMap(map.getObjectProperty(i, j, "map", ""), map.getObjectProperty(i, j, "spawn", ""));
-						return;
-					}
-				}
+		int objectCount = map.getObjectCount(OL_EXIT);
+		for (int i = 0; i < objectCount; i++) {
+			int ex = map.getObjectX(OL_EXIT, i);
+			int ey = map.getObjectY(OL_EXIT, i);
+			int ew = map.getObjectWidth(OL_EXIT, i);
+			int eh = map.getObjectHeight(OL_EXIT, i);
+			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
+				loadMap(map.getObjectProperty(OL_EXIT, i, "map", ""), map.getObjectProperty(OL_EXIT, i, "spawn", ""));
+				return;
 			}
 		}
 	}
@@ -144,12 +147,15 @@ public class World {
 	public static int getWidth() {
 		return map.getWidth();
 	}
+
 	public static int getHeight() {
 		return map.getHeight();
 	}
+
 	public static int getTileWidth() {
 		return map.getTileWidth();
 	}
+
 	public static int getTileHeight() {
 		return map.getTileHeight();
 	}

@@ -52,4 +52,11 @@ public class Player {
 		return y;
 	}
 	
+	public int getDX() {
+		return dx;
+	}
+	public int getDY() {
+		return dy;
+	}
+	
 }

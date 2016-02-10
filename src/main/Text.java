@@ -21,16 +21,16 @@ public class Text {
 			g.setColor(f.color);
 			int x = f.posX, y = f.posY;
 			String text = f.get();
-			for(int i = 0; i < f.index; i++) {
-				if(text.charAt(i) == '\n') {
+			int num = Integer.parseInt(""+f.get().charAt(0));
+			for(int i = 1; i < f.index; i++) {
+				if(text.charAt(i) == '\\') {
 					y += g.getFont().getHeight(""+text.charAt(i-1));
 					x = f.posX;
 					continue;
 				}
-				g.drawString(""+text.charAt(i), (int) (x+Math.cos(t*0.5+i)*3), (int) (y+Math.sin(t*0.5+i)*3));
+				g.drawString(""+text.charAt(i), (int) (x+Math.cos(t*0.25*num+i*20)*num*0.2), (int) (y+Math.sin(t*0.15*num+i*17)*num*0.2));
 				x += g.getFont().getWidth(""+text.charAt(i));
 			}
-//			g.drawString(f.get(), f.posX, f.posY);
 		}
 	}
 	public static void update() {

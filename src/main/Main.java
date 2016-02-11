@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.InputStream;
 import java.util.Random;
 
@@ -29,6 +30,9 @@ public class Main extends BasicGame {
 		try {
 			AppGameContainer app = new AppGameContainer(new Main("RPG"));
 			app.setDisplayMode(1920, 1080, true);
+			app.setDisplayMode(Toolkit.getDefaultToolkit().getScreenSize().width,
+					Toolkit.getDefaultToolkit().getScreenSize().height, true);
+//			app.setDisplayMode(800, 600, false);
 			app.setVSync(true);
 			app.setMinimumLogicUpdateInterval(15);
 			app.setShowFPS(false);
@@ -57,7 +61,6 @@ public class Main extends BasicGame {
 		g.scale(SCALE, SCALE);
 		World.render(gc, g);
 		g.scale(1.0f/SCALE, 1.0f/SCALE);
-		g.setFont((org.newdawn.slick.Font) fontMedium);
 		Text.render(g);
 //		Image textImg = new Image(gc.getWidth(), gc.getHeight());
 //		Text.render(textImg.getGraphics());

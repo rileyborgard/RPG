@@ -12,6 +12,7 @@ public class Text {
 	
 	public static void render(Graphics g) {
 		update();
+		int scale = g.getFont().getHeight("c");
 		t += 0.1;
 		for(Fragment f : frags) {
 			if(f.toDelete && f.done()) {
@@ -28,7 +29,7 @@ public class Text {
 					x = f.posX;
 					continue;
 				}
-				g.drawString(""+text.charAt(i), (int) (x+Math.cos(t*0.25*num+i*20)*num*0.2), (int) (y+Math.sin(t*0.15*num+i*17)*num*0.2));
+				g.drawString(""+text.charAt(i), (int) (x+Math.cos(t*0.25*num+i*20)*num*0.02*scale), (int) (y+Math.sin(t*0.15*num+i*17)*num*0.02*scale));
 				x += g.getFont().getWidth(""+text.charAt(i));
 			}
 		}

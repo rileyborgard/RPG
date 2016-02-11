@@ -29,7 +29,16 @@
    <properties>
     <property name="image" value="0"/>
     <property name="size" value="small"/>
-    <property name="text" value="texst"/>
+    <property name="text" value="test npc 2"/>
+    <property name="x" value="10"/>
+    <property name="y" value="10"/>
+   </properties>
+  </object>
+  <object name="testNpc" x="160" y="64" width="16" height="16">
+   <properties>
+    <property name="image" value="0"/>
+    <property name="size" value="small"/>
+    <property name="text" value="test npc 1"/>
     <property name="x" value="10"/>
     <property name="y" value="10"/>
    </properties>

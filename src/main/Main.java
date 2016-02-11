@@ -28,7 +28,7 @@ public class Main extends BasicGame {
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new Main("RPG"));
-			app.setDisplayMode(800, 600, false);
+			app.setDisplayMode(1920, 1080, true);
 			app.setVSync(true);
 			app.setMinimumLogicUpdateInterval(15);
 			app.setShowFPS(false);

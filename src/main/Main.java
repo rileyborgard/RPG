@@ -48,8 +48,8 @@ public class Main extends BasicGame {
 		Font awtFont;
 		try {
 			awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-			fontSmall = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/160)), false);
-			fontMedium = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/80)), false);
+			fontSmall = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/80)), false);
+			fontMedium = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/40)), false);
 			fontLarge = new TrueTypeFont(awtFont.deriveFont((float) gc.getWidth()/20), true);
 		} catch (Exception e) {
 			e.printStackTrace();

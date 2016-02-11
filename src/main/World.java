@@ -1,8 +1,12 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
+import java.nio.charset.Charset;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -76,7 +80,20 @@ public class World {
 	}
 
 	public static void loadMap(String strMap, String strSpawn) throws SlickException {
-		map = new TiledMap("res/" + strMap + ".tmx");
+		//make sure object layers have width and height properties so that slick doesn't freak out
+		String mapText = "";
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("res/" + strMap + ".tmx"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				mapText = mapText + line.replaceAll("<objectgroup", "<objectgroup width=\"1\" height=\"1\"").replaceAll("\"tilemap.png\"", "\"res/tilemap.png\"") + "\n";
+			}
+			in.close();
+		} catch (Exception e) {
+			throw new SlickException("Failed to load map");
+		}
+		System.out.println(mapText);
+		map = new TiledMap(new ByteArrayInputStream(mapText.getBytes(Charset.forName("UTF-8"))));
 		int objectCount = map.getObjectCount(OL_SPAWN);
 		for (int i = 0; i < objectCount; i++) {
 			if (map.getObjectName(OL_SPAWN, i).equals(strSpawn)) {

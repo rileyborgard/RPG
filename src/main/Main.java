@@ -28,6 +28,8 @@ public class Main extends BasicGame {
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new Main("RPG"));
+//			app.setDisplayMode(Toolkit.getDefaultToolkit().getScreenSize().width,
+//					Toolkit.getDefaultToolkit().getScreenSize().height, true);
 			app.setDisplayMode(800, 600, false);
 			app.setVSync(true);
 			app.setMinimumLogicUpdateInterval(15);
@@ -57,7 +59,6 @@ public class Main extends BasicGame {
 		g.scale(SCALE, SCALE);
 		World.render(gc, g);
 		g.scale(1.0f/SCALE, 1.0f/SCALE);
-		g.setFont((org.newdawn.slick.Font) fontLarge);
 		Text.render(g);
 //		Image textImg = new Image(gc.getWidth(), gc.getHeight());
 //		Text.render(textImg.getGraphics());

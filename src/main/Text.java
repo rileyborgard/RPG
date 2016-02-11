@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.UnicodeFont;
 
 public class Text {
-
+	
 	private static ArrayList<Fragment> frags = new ArrayList<>();
 	private static double t;
 	
 	public static void render(Graphics g) {
+		g.setFont(Main.fontLarge);
 		update();
 		t += 0.1;
 		for(Fragment f : frags) {
@@ -21,7 +23,7 @@ public class Text {
 			g.setColor(f.color);
 			int x = f.posX, y = f.posY;
 			String text = f.get();
-			int num = Integer.parseInt(""+f.get().charAt(0));
+			int num = 2*Integer.parseInt(""+f.get().charAt(0));
 			for(int i = 1; i < f.index; i++) {
 				if(text.charAt(i) == '\\') {
 					y += g.getFont().getHeight(""+text.charAt(i-1));

@@ -29,7 +29,7 @@ public class Main extends BasicGame {
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new Main("RPG"));
-			app.setDisplayMode(1920, 1080, true);
+//			app.setDisplayMode(1920, 1080, true);
 			app.setDisplayMode(Toolkit.getDefaultToolkit().getScreenSize().width,
 					Toolkit.getDefaultToolkit().getScreenSize().height, true);
 //			app.setDisplayMode(800, 600, false);

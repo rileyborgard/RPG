@@ -15,17 +15,17 @@ public class World {
 
 	public static final int OL_EXIT = 0, OL_SPAWN = 1, OL_NPC = 2;
 	
-	private static TiledMap map;
-
-	private static Player player;
-
-	private static boolean talking;
+	public static TiledMap map;
+	
+	public static Player player;
+	
+	public static boolean talking;
 	// private static String text;
-
+	
 	public static void init(GameContainer gc) throws SlickException {
 		loadMap("room1", "spawn0");
 	}
-
+	
 	public static void update(GameContainer gc, int dt) throws SlickException {
 		if (!talking)
 			player.update(gc, dt);
@@ -39,7 +39,7 @@ public class World {
 				Text.skip();
 		}
 	}
-
+	
 	public static void render(GameContainer gc, Graphics g) throws SlickException {
 		int width = gc.getWidth() / Main.SCALE;
 		int height = gc.getHeight() / Main.SCALE;
@@ -47,14 +47,9 @@ public class World {
 		int sy = height / 2 - player.getY();
 		map.render(sx, sy);
 		player.render(gc, g);
-		int objectCount = map.getObjectCount(OL_NPC);
-		for (int i = 0; i < objectCount; i++) {
-			int x = map.getObjectX(OL_NPC, i) + sx;
-			int y = map.getObjectY(OL_NPC, i) + sy;
-			g.drawImage(Images.getNpcImage(NpcHandler.npc[i].imgId, NpcHandler.npc[i].dx, NpcHandler.npc[i].dy), x, y);
-		}
+		NpcHandler.render(gc, g);
 	}
-
+	
 	private static void chat(GameContainer gc) {
 		int x = player.getX();
 		int y = player.getY();

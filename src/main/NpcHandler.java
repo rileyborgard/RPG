@@ -1,5 +1,7 @@
 package main;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class NpcHandler {
@@ -17,6 +19,21 @@ public class NpcHandler {
 			npc[i].imgId = Integer.parseInt(map.getObjectProperty(World.OL_NPC, i, "image", ""));
 		}
 		
+	}
+	
+	public static void render(GameContainer gc, Graphics g) {
+		int width = gc.getWidth() / Main.SCALE;
+		int height = gc.getHeight() / Main.SCALE;
+		int sx = width / 2 - World.player.getX();
+		int sy = height / 2 - World.player.getY();
+		for (int i = 0; i < npc.length; i++) {
+			int x = npc[i].x + sx;
+			int y = npc[i].y + sy;
+			int id = npc[i].imgId;
+			int dx = npc[i].dx;
+			int dy = npc[i].dy;
+			SpriteHandler.get("npc", ""+id, ""+dx, ""+dy).draw(x, y);
+		}
 	}
 	
 	public static class Npc {

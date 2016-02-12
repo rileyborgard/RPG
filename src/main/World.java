@@ -31,7 +31,7 @@ public class World {
 			player.update(gc, dt);
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			if (!talking)
-				chat();
+				chat(gc);
 			else if (Text.done()) {
 				talking = false;
 				Text.reset();
@@ -51,11 +51,11 @@ public class World {
 		for (int i = 0; i < objectCount; i++) {
 			int x = map.getObjectX(OL_NPC, i) + sx;
 			int y = map.getObjectY(OL_NPC, i) + sy;
-			g.drawImage(Images.getPlayerImage(talking ? -player.getDX():0, talking ? -player.getDY():0), x, y);
+			g.drawImage(Images.getNpcImage(NpcHandler.npc[i].imgId, NpcHandler.npc[i].dx, NpcHandler.npc[i].dy), x, y);
 		}
 	}
 
-	private static void chat() {
+	private static void chat(GameContainer gc) {
 		int x = player.getX();
 		int y = player.getY();
 		int dx = player.getDX();
@@ -71,9 +71,11 @@ public class World {
 			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey && dx * (x + tw / 2 - ex - ew / 2) <= 0
 					&& dy * (y + th / 2 - ey - eh / 2) <= 0) {
 				Text.say(DialogueHandler.get(map.getObjectProperty(OL_NPC, i, "text", "")),
-						Integer.parseInt(map.getObjectProperty(OL_NPC, i, "x", "")),
-						Integer.parseInt(map.getObjectProperty(OL_NPC, i, "y", "")));
+						(int) (Double.parseDouble(map.getObjectProperty(OL_NPC, i, "textX", ""))*gc.getWidth()),
+						(int) (Double.parseDouble(map.getObjectProperty(OL_NPC, i, "textY", ""))*gc.getHeight()));
 				talking = true;
+				NpcHandler.npc[i].dx = -player.getDX();
+				NpcHandler.npc[i].dy = -player.getDY();
 				return;
 			}
 		}
@@ -86,21 +88,24 @@ public class World {
 			BufferedReader in = new BufferedReader(new FileReader("res/" + strMap + ".tmx"));
 			String line;
 			while ((line = in.readLine()) != null) {
-				mapText = mapText + line.replaceAll("<objectgroup", "<objectgroup width=\"1\" height=\"1\"").replaceAll("\"tilemap.png\"", "\"res/tilemap.png\"") + "\n";
+				if(line.contains("width"))
+					mapText = mapText + line.replaceAll("\"tilemap.png\"", "\"res/tilemap.png\"");
+				else
+					mapText = mapText + line.replaceAll("<objectgroup", "<objectgroup width=\"1\" height=\"1\"").replaceAll("\"tilemap.png\"", "\"res/tilemap.png\"") + "\n";
 			}
 			in.close();
 		} catch (Exception e) {
 			throw new SlickException("Failed to load map");
 		}
-		System.out.println(mapText);
 		map = new TiledMap(new ByteArrayInputStream(mapText.getBytes(Charset.forName("UTF-8"))));
 		int objectCount = map.getObjectCount(OL_SPAWN);
 		for (int i = 0; i < objectCount; i++) {
 			if (map.getObjectName(OL_SPAWN, i).equals(strSpawn)) {
 				player = new Player(map.getObjectX(OL_SPAWN, i), map.getObjectY(OL_SPAWN, i));
-				return;
+				break;
 			}
 		}
+		NpcHandler.load(map);
 	}
 
 	public static boolean isPlaceFree(int x, int y) {

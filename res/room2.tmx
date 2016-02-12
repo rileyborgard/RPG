@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="4">
- <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="20" columns="4">
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16">
   <image source="tilemap.png" width="64" height="80"/>
  </tileset>
  <layer name="Ground" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NiYGBgGsWjeBSP4lE8iknEAC9MrVpABgAA
+   H4sIAAAAAAAAA2NiYGBgGsWjeBSP4lE8iknEAC9MrVpABgAA
   </data>
  </layer>
  <layer name="Walls" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NhYGBgoTKmFhg1b9S8UfNGzRs1j7rmEVt2E6MeANq3AtBABgAA
+   H4sIAAAAAAAAA2NhYGBgoTKmFhg1b9S8UfNGzRs1j7rmEVt2E6MeANq3AtBABgAA
   </data>
  </layer>
- <objectgroup name="exits">
-  <object id="1" name="exit0" x="128" y="319" width="48" height="1">
+ <objectgroup name="exits" width="0" height="0">
+  <object name="exit0" x="128" y="319" width="48" height="1">
    <properties>
     <property name="map" value="room1"/>
     <property name="spawn" value="spawn0"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="spawns">
-  <object id="2" name="spawn0" x="144" y="272" width="16" height="16"/>
+ <objectgroup name="spawns" width="0" height="0">
+  <object name="spawn0" x="144" y="272" width="16" height="16"/>
  </objectgroup>
- <objectgroup name="npcs">
-  <object id="3" name="testNpc" x="144" y="160" width="16" height="16">
+ <objectgroup name="npcs" width="0" height="0">
+  <object name="testNpc" x="144" y="160" width="16" height="16">
    <properties>
     <property name="image" value="0"/>
     <property name="size" value="small"/>
     <property name="text" value="test npc 2"/>
-    <property name="x" value="10"/>
-    <property name="y" value="10"/>
+    <property name="textX" value="0.5"/>
+    <property name="textY" value="0.8"/>
    </properties>
   </object>
   <object name="testNpc" x="160" y="64" width="16" height="16">
@@ -39,8 +39,8 @@
     <property name="image" value="0"/>
     <property name="size" value="small"/>
     <property name="text" value="test npc 1"/>
-    <property name="x" value="10"/>
-    <property name="y" value="10"/>
+    <property name="textX" value="0.5"/>
+    <property name="textY" value="0.8"/>
    </properties>
   </object>
  </objectgroup>

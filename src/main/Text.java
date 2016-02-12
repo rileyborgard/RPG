@@ -21,17 +21,22 @@ public class Text {
 				continue;
 			}
 			g.setColor(f.color);
-			int x = f.posX, y = f.posY;
-			String text = f.get();
-			int num = 2*Integer.parseInt(""+f.get().charAt(0));
-			for(int i = 1; i < f.index; i++) {
-				if(text.charAt(i) == '\\') {
-					y += g.getFont().getHeight(""+text.charAt(i-1));
-					x = f.posX;
-					continue;
+//			String[] text = f.get().substring(0, f.index).split("\n");
+			String[] text = f.get().split("\n");
+			int x, y = f.posY-g.getFont().getHeight(text[0])/2;
+			int num = Integer.parseInt(""+f.get().charAt(0));
+			int sum = 0;
+			loop:for(int k = 0; k < text.length; k++) {
+				x = f.posX-g.getFont().getWidth(text[k])/2;
+				for(int i = 1; i < text[k].length(); i++) {
+					sum++;
+					if(sum >= f.index)
+						break loop;
+					g.drawString(""+text[k].charAt(i), (int) (x+Math.cos(t*0.5*num+i*20)*num*0.01*scale), (int) (y+Math.sin(t*0.4*num+i*17)*num*0.01*scale));
+					x += g.getFont().getWidth(""+text[k].charAt(i));
 				}
-				g.drawString(""+text.charAt(i), (int) (x+Math.cos(t*0.25*num+i*20)*num*0.02*scale), (int) (y+Math.sin(t*0.15*num+i*17)*num*0.02*scale));
-				x += g.getFont().getWidth(""+text.charAt(i));
+				if(text[0].length() != 0)
+					y += g.getFont().getHeight(""+text[0].charAt(0));
 			}
 		}
 	}
@@ -66,7 +71,7 @@ public class Text {
 		public String[] text;
 		public int posX, posY;
 		public int index = 0, lineIndex = 0;
-		private double rawI = 1, scrollSpeed = 0.1, delay = 0;
+		private double rawI = 1, scrollSpeed = 0.3, delay = 0;
 		public Color color = Color.white;
 		public boolean toDelete = false;
 		

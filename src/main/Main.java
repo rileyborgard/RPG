@@ -16,7 +16,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 public class Main extends BasicGame {
 	
-	public static int SCALE = 2;
+	public static int SCALE = 3;
 	
 	public static TrueTypeFont fontSmall, fontMedium, fontLarge;
 	
@@ -52,7 +52,7 @@ public class Main extends BasicGame {
 			awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 			fontSmall = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/80)), false);
 			fontMedium = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/40)), false);
-			fontLarge = new TrueTypeFont(awtFont.deriveFont((float) gc.getWidth()/20), true);
+			fontLarge = new TrueTypeFont(awtFont.deriveFont((float) Math.min(48, gc.getWidth()/20)), false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

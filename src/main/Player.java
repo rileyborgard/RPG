@@ -10,6 +10,8 @@ public class Player {
 	private int x, y;
 	private static int dx, dy;
 	
+	public static final int WIDTH = 16, HEIGHT = 16;
+	
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -25,8 +27,9 @@ public class Player {
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		int width = gc.getWidth()/Main.SCALE;
 		int height = gc.getHeight()/Main.SCALE;
-		
-		SpriteHandler.get("playerImage", ""+dx, ""+dy).draw(width/2-World.getTileWidth()/2, height/2-World.getTileHeight()/2);
+		int sx = width / 2 - x - WIDTH/2;
+		int sy = height / 2 - y - HEIGHT/2;
+		SpriteHandler.get("playerImage", ""+dx, ""+dy).draw(x + sx, y + sy);
 	}
 	
 	private void checkCollisions(int dx, int dy) {
@@ -47,10 +50,10 @@ public class Player {
 	}
 	
 	public int getX() {
-		return x+World.getTileWidth()/2;
+		return x;
 	}
 	public int getY() {
-		return y+World.getTileHeight()/2;
+		return y;
 	}
 	
 	public int getDX() {

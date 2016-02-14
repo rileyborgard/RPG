@@ -22,8 +22,8 @@ public class NpcHandler {
 	}
 	
 	public static void render(GameContainer gc, Graphics g) {
-		int width = gc.getWidth() / Main.SCALE;
-		int height = gc.getHeight() / Main.SCALE;
+		int width = gc.getWidth() / Main.SCALE - Player.WIDTH;
+		int height = gc.getHeight() / Main.SCALE - Player.HEIGHT;
 		int sx = width / 2 - World.player.getX();
 		int sy = height / 2 - World.player.getY();
 		for (int i = 0; i < npc.length; i++) {

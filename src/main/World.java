@@ -41,8 +41,8 @@ public class World {
 	}
 	
 	public static void render(GameContainer gc, Graphics g) throws SlickException {
-		int width = gc.getWidth() / Main.SCALE;
-		int height = gc.getHeight() / Main.SCALE;
+		int width = gc.getWidth() / Main.SCALE - Player.WIDTH;
+		int height = gc.getHeight() / Main.SCALE - Player.HEIGHT;
 		int sx = width / 2 - player.getX();
 		int sy = height / 2 - player.getY();
 		map.render(sx, sy);
@@ -57,14 +57,16 @@ public class World {
 		int dy = player.getDY();
 		int tw = map.getTileWidth();
 		int th = map.getTileHeight();
+		int pw = Player.WIDTH;
+		int ph = Player.HEIGHT;
 		int objectCount = map.getObjectCount(OL_NPC);
 		for (int i = 0; i < objectCount; i++) {
-			int ex = map.getObjectX(OL_NPC, i) - tw;
-			int ey = map.getObjectY(OL_NPC, i) - th;
-			int ew = map.getObjectWidth(OL_NPC, i) + 2 * tw;
-			int eh = map.getObjectHeight(OL_NPC, i) + 2 * th;
-			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey && dx * (x + tw / 2 - ex - ew / 2) <= 0
-					&& dy * (y + th / 2 - ey - eh / 2) <= 0) {
+			int ex = map.getObjectX(OL_NPC, i) - tw/2;
+			int ey = map.getObjectY(OL_NPC, i) - th/2;
+			int ew = map.getObjectWidth(OL_NPC, i) + tw;
+			int eh = map.getObjectHeight(OL_NPC, i) + th;
+			if (ex + ew > x && x + pw > ex && ey + eh > y && y + ph > ey && dx * (x + pw / 2 - ex - ew / 2) <= 0
+					&& dy * (y + ph / 2 - ey - eh / 2) <= 0) {
 				Text.say(DialogueHandler.get(map.getObjectProperty(OL_NPC, i, "text", "")),
 						(int) (Double.parseDouble(map.getObjectProperty(OL_NPC, i, "textX", ""))*gc.getWidth()),
 						(int) (Double.parseDouble(map.getObjectProperty(OL_NPC, i, "textY", ""))*gc.getHeight()));

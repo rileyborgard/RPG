@@ -13,11 +13,11 @@ public class Images {
 	public static void load() throws SlickException {
 		
 		// load player image
-		playerImage = new Image[3][3];
+		playerImage = new Image[4][4];
 		Image sheet = new Image("res/player.png");
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				playerImage[i][j] = sheet.getSubImage(i*16, j*16, 16, 16);
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				playerImage[i][j] = sheet.getSubImage(i*17, j*26, 17, 26);
 				playerImage[i][j].setFilter(Image.FILTER_NEAREST);
 			}
 		}
@@ -35,8 +35,20 @@ public class Images {
 		
 	}
 	
+	static int t = 0;
+	
 	public static Image getPlayerImage(int dx, int dy) {
-		return playerImage[dx+1][dy+1];
+		t = (t+1)%40;
+		if(dy > 0)
+			return playerImage[0][t/10];
+		if(dy < 0)
+			return playerImage[3][t/10];
+		if(dx > 0)
+			return playerImage[1][t/10];
+		if(dx < 0)
+			return playerImage[2][t/10];
+		return playerImage[0][0];
+//		return playerImage[dx+1][dy+1];
 	}
 	
 	public static Image getNpcImage(int npc, int dx, int dy) {

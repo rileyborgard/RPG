@@ -133,17 +133,17 @@ public class World {
 		int th = getTileHeight();
 		if(x < 0)
 			return false;
-		if(x + w >= tw*getWidth())
+		if(x + w > tw*getWidth())
 			return false;
 		if(y < 0)
 			return false;
-		if(y + h >= th*getHeight())
+		if(y + h > th*getHeight())
 			return false;
 		
 		int minX = x / tw;
-		int maxX = (x + w) / tw;
+		int maxX = (x + w - 1) / tw;
 		int minY = y / th;
-		int maxY = (y + h) / th;
+		int maxY = (y + h - 1) / th;
 		for(int i = minX; i <= maxX; i++) {
 			for(int j = minY; j <= maxY; j++) {
 				if(map.getTileId(i, j, map.getLayerIndex("Walls")) > 0 &&
@@ -169,15 +169,15 @@ public class World {
 	}
 
 	public static void checkExits(int x, int y) throws SlickException {
-		int tw = map.getTileWidth();
-		int th = map.getTileHeight();
+		int pw = Player.WIDTH;
+		int ph = Player.HEIGHT;
 		int objectCount = map.getObjectCount(OL_EXIT);
 		for (int i = 0; i < objectCount; i++) {
 			int ex = map.getObjectX(OL_EXIT, i);
 			int ey = map.getObjectY(OL_EXIT, i);
 			int ew = map.getObjectWidth(OL_EXIT, i);
 			int eh = map.getObjectHeight(OL_EXIT, i);
-			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
+			if (ex + ew > x && x + pw > ex && ey + eh > y && y + ph > ey) {
 				loadMap(map.getObjectProperty(OL_EXIT, i, "map", ""), map.getObjectProperty(OL_EXIT, i, "spawn", ""));
 				return;
 			}

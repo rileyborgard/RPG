@@ -37,8 +37,12 @@ public class Images {
 	
 	static int t = 0;
 	
-	public static Image getPlayerImage(int dx, int dy) {
-		t = (t+1)%40;
+	public static Image getPlayerImage(int dx, int dy, int vx, int vy) {
+		if(vx == dx && vy == dy)
+			t = (t+1)%40;
+		else
+			//default
+			t = 10;
 		if(dy > 0)
 			return playerImage[0][t/10];
 		if(dy < 0)

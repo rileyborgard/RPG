@@ -7,7 +7,7 @@ public class SpriteHandler {
 	public static Image get(String ...str) {
 		try {
 			if(str[0].equals("playerImage")) {
-				return Images.getPlayerImage(Integer.parseInt(str[1]), Integer.parseInt(str[2]));
+				return Images.getPlayerImage(Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), Integer.parseInt(str[4]));
 			}
 			if(str[0].equals("npc")) {
 				return Images.getNpcImage(Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));

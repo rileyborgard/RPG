@@ -9,8 +9,9 @@ public class Player {
 	
 	private int x, y;
 	private static int dx, dy;
+	private static int vx, vy;
 	
-	public static final int WIDTH = 16, HEIGHT = 16;
+	public static final int WIDTH = 17, HEIGHT = 26;
 	
 	public Player(int x, int y) {
 		this.x = x;
@@ -29,18 +30,22 @@ public class Player {
 		int height = gc.getHeight()/Main.SCALE;
 		int sx = width / 2 - x - WIDTH/2;
 		int sy = height / 2 - y - HEIGHT/2;
-		SpriteHandler.get("playerImage", ""+dx, ""+dy).draw(x + sx, y + sy);
+		SpriteHandler.get("playerImage", ""+dx, ""+dy, ""+vx, ""+vy).draw(x + sx, y + sy);
 	}
 	
 	private void checkCollisions(int dx, int dy) {
+		vx = 0;
+		vy = 0;
 		if(dx != 0 || dy != 0) {
-			this.dx = dx;
-			this.dy = dy;
+			Player.dx = dx;
+			Player.dy = dy;
 		}
-		if(World.isPlaceFree(x+dx, y))
+		if(World.isPlaceFree(x+dx, y, WIDTH, HEIGHT))
 			x += dx;
-		if(World.isPlaceFree(x, y+dy))
+		if(World.isPlaceFree(x, y+dy, WIDTH, HEIGHT))
 			y += dy;
+		vx = dx;
+		vy = dy;
 		
 		//borders of map collisions
 		x = Math.max(0, x);

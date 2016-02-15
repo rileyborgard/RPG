@@ -104,41 +104,62 @@ public class World {
 		}
 		NpcHandler.load(map);
 	}
-
-	public static boolean isPlaceFree(int x, int y) {
+	
+	public static boolean isPlaceFree(int x, int y, int w, int h) {
 		//check walls layer
-		boolean rightEdge = 1 + x / map.getTileWidth() >= map.getWidth();
-		boolean bottomEdge = 1 + y / map.getTileHeight() >= map.getHeight();
-		boolean ul = map.getTileId(x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-		boolean ur = rightEdge ? true
-				: map.getTileId(1 + x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-		boolean bl = bottomEdge ? true
-				: map.getTileId(x / map.getTileWidth(), 1 + y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
-		boolean br = rightEdge || bottomEdge ? true
-				: map.getTileId(1 + x / map.getTileWidth(), 1 + y / map.getTileHeight(),
-						map.getLayerIndex("Walls")) > 0;
-
-		boolean xAligned = x % map.getTileWidth() == 0;
-		boolean yAligned = y % map.getTileHeight() == 0;
-
-		if (ul)
+//		boolean rightEdge = 1 + x / map.getTileWidth() >= map.getWidth();
+//		boolean bottomEdge = 1 + y / map.getTileHeight() >= map.getHeight();
+//		boolean ul = map.getTileId(x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+//		boolean ur = rightEdge ? true
+//				: map.getTileId(1 + x / map.getTileWidth(), y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+//		boolean bl = bottomEdge ? true
+//				: map.getTileId(x / map.getTileWidth(), 1 + y / map.getTileHeight(), map.getLayerIndex("Walls")) > 0;
+//		boolean br = rightEdge || bottomEdge ? true
+//				: map.getTileId(1 + x / map.getTileWidth(), 1 + y / map.getTileHeight(),
+//						map.getLayerIndex("Walls")) > 0;
+//
+//		boolean xAligned = x % map.getTileWidth() == 0;
+//		boolean yAligned = y % map.getTileHeight() == 0;
+//
+//		if (ul)
+//			return false;
+//		if (ur && !xAligned)
+//			return false;
+//		if (bl && !yAligned)
+//			return false;
+//		if (br && !xAligned && !yAligned)
+//			return false;
+		int tw = getTileWidth();
+		int th = getTileHeight();
+		if(x < 0)
 			return false;
-		if (ur && !xAligned)
+		if(x + w >= tw*getWidth())
 			return false;
-		if (bl && !yAligned)
+		if(y < 0)
 			return false;
-		if (br && !xAligned && !yAligned)
+		if(y + h >= th*getHeight())
 			return false;
 		
-		int tw = map.getTileWidth();
-		int th = map.getTileHeight();
+		int minX = x / tw;
+		int maxX = (x + w) / tw;
+		int minY = y / th;
+		int maxY = (y + h) / th;
+		for(int i = minX; i <= maxX; i++) {
+			for(int j = minY; j <= maxY; j++) {
+				if(map.getTileId(i, j, map.getLayerIndex("Walls")) > 0 &&
+						i*tw + tw > x && x + w > i*tw && j*th + th > y && y + h > j*th) {
+					return false;
+				}
+			}
+		}
+		
 		int objectCount = map.getObjectCount(OL_NPC);
 		for(int i = 0; i < objectCount; i++) {
 			int ex = map.getObjectX(OL_NPC, i);
 			int ey = map.getObjectY(OL_NPC, i);
 			int ew = map.getObjectWidth(OL_NPC, i);
 			int eh = map.getObjectHeight(OL_NPC, i);
-			if (ex + ew > x && x + tw > ex && ey + eh > y && y + th > ey) {
+			if (ex + ew > x && x + w > ex && ey + eh > y && y + h > ey) {
 				return false;
 			}
 		}
